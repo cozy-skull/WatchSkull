@@ -20,12 +20,19 @@ export function useLibrary() {
     setLibrary(l => [...l, {
       ...item,
       status,
-      platform: '',
-      rating: 0,
-      review: '',
-      season: 1,
-      episode: 1,
-      addedAt: Date.now(),
+      platform:     '',
+      ratings:      {},   // { profileId: 1-5 }
+      review:       '',
+      season:       1,
+      episode:      1,
+      viewingMode:  '',
+      kidFriendly:  '',
+      vibeTags:     [],
+      attentionTags:[],
+      goreLevel:    '',
+      nextSeason:   '',
+      notes:        '',
+      addedAt:      Date.now(),
     }])
   }
 
@@ -50,10 +57,19 @@ export function useLibrary() {
     addToLibrary(item, 'Watching')
   }
 
+  function setRating(titleId, profileId, value) {
+    setLibrary(l => l.map(i => {
+      if (i.id !== titleId) return i
+      const ratings = { ...i.ratings, [profileId]: value }
+      return { ...i, ratings }
+    }))
+  }
+
   return {
     library, watchlist,
     inLibrary, inWatchlist,
     addToLibrary, updateLibrary, removeFromLibrary,
     addToWatchlist, removeFromWatchlist, moveToLibrary,
+    setRating,
   }
 }
